@@ -1,0 +1,5 @@
+#=====================================================================================#
+#           Simple Docker Compose Setup using PHP, NGINX, PostgreSQL, Redis           #
+#=====================================================================================#
+
+version: '3.9'      # Declear the syntax version of docker compose
