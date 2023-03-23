@@ -3,3 +3,27 @@
 #=====================================================================================#
 
 version: '3.9'      # Declear the syntax version of docker compose
+
+services:
+  php:
+    build: 
+      context: .
+      dockerfile: docker/php/php-config
+    volumes:
+      - ./public:/var/www/html
+    networks:
+      - app-network
+  nginx:
+    build: 
+      context: .
+      dockerfile: docker/nginx/nginx-config
+    ports:
+      - "8080:80"
+    volumes:
+      - ./docker/nginx/conf.d/nginx.conf:/etc/nginx/conf.d
+      - ./public:/var/www/html
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
