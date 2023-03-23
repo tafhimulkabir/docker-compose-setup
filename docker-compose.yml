@@ -20,7 +20,6 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./docker/nginx/conf.d/nginx.conf:/etc/nginx/conf.d
       - ./public:/var/www/html
     networks:
       - app-network
