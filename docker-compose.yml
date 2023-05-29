@@ -2,19 +2,23 @@
 #           Simple Docker Compose Setup using PHP, NGINX, PostgreSQL, Redis           #
 #=====================================================================================#
 
-version: '3.9'      # Declear the syntax version of docker compose
+version: '3.9'
 
 services:
   php:
-    build: 
+    build:
       context: .
       dockerfile: docker/php/php-config
     volumes:
       - ./public:/var/www/html
     networks:
       - app-network
+    depends_on:
+      - postgres
+      - redis
+
   nginx:
-    build: 
+    build:
       context: .
       dockerfile: docker/nginx/nginx-config
     ports:
@@ -23,6 +27,30 @@ services:
       - ./public:/var/www/html
     networks:
       - app-network
+    depends_on:
+      - php
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres-container
+    environment:
+      - POSTGRES_USER=your_user
+      - POSTGRES_PASSWORD=your_password
+      - POSTGRES_DB=your_database
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    container_name: redis-container
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  postgres-data:
